@@ -5,9 +5,9 @@ import json
 # To initialize:
 # metadata = WhatifMetadata(para_ids_metainfo_fp=constants.PARA_ID_METADATA_INFO,
 #                                        situation_graphs_fp=constants.SITUATION_GRAPHS_FILE)
-from src import SGFileLoaders, collections_util
-from src.collections_util import add_key_to_map_arr
-from src.situation_graph import SituationGraph
+from src.helpers import SGFileLoaders, collections_util
+from src.helpers.collections_util import add_key_to_map_arr
+from src.helpers.situation_graph import SituationGraph
 
 
 class WhatifMetadata:

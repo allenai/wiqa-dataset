@@ -8,10 +8,10 @@ from typing import Any, Dict, List
 
 from tqdm import tqdm
 
-from src.ProparaExtendedPara import ProparaExtendedParaMetadata
-from src.dataset_info import *
-from src.situation_graph import SituationLabel
-from src.whatif_metadata import WhatifMetadata
+from src.helpers.ProparaExtendedPara import ProparaExtendedParaMetadata
+from src.helpers.dataset_info import *
+from src.helpers.situation_graph import SituationLabel
+from src.helpers.whatif_metadata import WhatifMetadata
 
 
 class Jsonl:

@@ -5,7 +5,7 @@ for AAAI20
 
 from collections import namedtuple
 
-from src.cached_filepath import cached_path
+from src.helpers.cached_filepath import cached_path
 
 DatasetInfo = namedtuple('DatasetInfo',
                          ['beaker_link', 'cloud_path', 'local_path', 'data_reader', 'metadata_info', 'readme'])

@@ -2,7 +2,7 @@ import csv
 import json
 from typing import List, Dict
 
-from src import constants
+from src.helpers import constants
 
 
 class ProparaExtendedParaEntry:

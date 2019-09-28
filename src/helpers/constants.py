@@ -5,7 +5,7 @@ Constants that are necessary for this source folder
 ############################
 # Dataset related constants
 ############################
-from src.situation_graph import SituationLabel
+from src.helpers.situation_graph import SituationLabel
 
 answer_dict = {'A': 'Correct Effect',
                'B': 'Opposite Effect',
