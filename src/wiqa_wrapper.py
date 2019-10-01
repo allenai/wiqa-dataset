@@ -334,7 +334,7 @@ def test_create_concise_dataset():
 def test_load_dataset():
     input_dirpath = "/tmp/od2/"
     for x in WIQADataPoint.load_all_in_jsonl(jsonl_filepath=input_dirpath+"dev.jsonl"):
-        print(x.to_json())
+        print(json.dumps(x.to_json()))
         break
 
 
