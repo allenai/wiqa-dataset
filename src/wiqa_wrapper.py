@@ -129,16 +129,39 @@ class WIQAExplanation(object):
         self.j = j
 
     @staticmethod
-    def instantiate_from(json_data: Dict[str, Any]):
+    def instantiate_from_old_json_version(json_data: Dict[str, Any]):
         assert 'explanation' in json_data, f"WIQA explanation cannot be instantiated due to missing keys[explanation] in json: {json_data}"
         assert 'di' in json_data[
             'explanation'], f"WIQA explanation cannot be instantiated due to missing keys[explanation][di] in json: {json_data}"
         return WIQAExplanation(
             di=SituationLabel.from_str(json_data['explanation']['di']),
             dj=SituationLabel.from_str(json_data['explanation']['di']),
-            de=SituationLabel.from_str(json_data['explanation']['dj']),
+            de=SituationLabel.from_str(json_data['explanation']['dj'] if "de" not in json_data["explanation"] else json_data['explanation']['de']),
             i=json_data['explanation']['i'],
             j=json_data['explanation']['j']
+        )
+
+    @staticmethod
+    def instantiate_from(json_data: Dict[str, Any]):
+        '''
+        :param json_data: must contain keys:
+        "explanations": {
+            "de" : answer_label,
+            "di": optional_supporting_sent_label,
+            "i": optional_sentidx_or_None,
+            "j": optional_sentidx_or_None
+        }
+        :return: WIQAExplanation object.
+        '''
+        assert 'explanation' in json_data, f"WIQA explanation cannot be instantiated due to missing keys[explanation] in json: {json_data}"
+        assert 'di' in json_data[
+            'explanation'], f"WIQA explanation cannot be instantiated due to missing keys[explanation][di] in json: {json_data}"
+        return WIQAExplanation(
+            di=None if 'di' not in 'explanation' or not json_data['explanation']['di'] else SituationLabel.from_str(json_data['explanation']['di']),
+            dj=None if 'di' not in 'explanation' or not json_data['explanation']['di'] else SituationLabel.from_str(json_data['explanation']['di']),
+            de=SituationLabel.from_str(json_data['explanation']['de']),
+            i=None if 'i' not in json_data['explanation'] else json_data['explanation']['i'],
+            j=None if 'j' not in json_data['explanation'] else json_data['explanation']['j']
         )
 
     @staticmethod
@@ -221,7 +244,7 @@ class WIQADataPoint(object):
         if explanation_type == WIQAExplanationType.NO_EXPL:
             explanation = None
         else:
-            explanation = WIQAExplanation.instantiate_from(json_data=json_data)
+            explanation = WIQAExplanation.instantiate_from_old_json_version(json_data=json_data)
         return WIQADataPoint(
             question=WIQAQuestion.instantiate_from(json_data=json_data),
             explanation=explanation,
@@ -318,28 +341,6 @@ def create_concise_dataset(input_filepaths, output_filepaths, explanation_type: 
                     out_file.write('\n')
 
 
-# TODO: overall three functionalities.
-# 1. (done) reformat dataset (this is a command line argument.)
-# 2. load (reformatted) dataset ... includes other operations on it. (this is not command line)
-# 3. Evaluation code.
-def test_create_concise_dataset():
-    partitions = ["train.jsonl", "dev.jsonl", "test.jsonl"]
-    create_concise_dataset(
-        input_filepaths=[download_from_url_if_not_in_cache(wiqa_explanations_v1.cloud_path + partition) for partition in
-                         partitions],
-        output_filepaths=["/tmp/od2/" + x for x in partitions],
-        explanation_type=WIQAExplanationType.PARA_SENT_EXPL)
-
-
-def test_load_dataset():
-    input_dirpath = "/tmp/od2/"
-    for x in WIQADataPoint.load_all_in_jsonl(jsonl_filepath=input_dirpath+"dev.jsonl"):
-        print(json.dumps(x.to_json()))
-        break
-
-
-test_create_concise_dataset()
-test_load_dataset()
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
