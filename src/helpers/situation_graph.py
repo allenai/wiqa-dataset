@@ -449,7 +449,7 @@ class SituationGraph:
         # "W" -> "A"[label = "not implies"]
         # "W" -> "D"[label = "implies"]
         # }
-        :return: 
+        :return:
         '''
         g = list()
         printed_newline = "________"  # "\\\n"

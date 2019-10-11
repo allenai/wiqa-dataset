@@ -2,7 +2,7 @@ import csv
 import json
 from typing import List, Dict
 
-from src.helpers import constants
+from src.helpers.dataset_info import propara_para_info, download_from_url_if_not_in_cache
 
 
 class ProparaExtendedParaEntry:
@@ -39,7 +39,8 @@ class ProparaExtendedParaEntry:
 class ProparaExtendedParaMetadata:
 
     def __init__(self,
-                 extended_propara_para_fp=constants.EXTENDED_PROPARA_PARA):
+                 extended_propara_para_fp=download_from_url_if_not_in_cache(
+                     propara_para_info.cloud_path)):
         self.para_map: Dict[str, ProparaExtendedParaEntry] = dict()
         for row_num, row_as_arr in enumerate(csv.reader(open(extended_propara_para_fp), delimiter="\t")):
             if row_num > 0:  # skips header

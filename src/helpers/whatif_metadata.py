@@ -2,9 +2,6 @@ import csv
 import json
 
 
-# To initialize:
-# metadata = WhatifMetadata(para_ids_metainfo_fp=constants.PARA_ID_METADATA_INFO,
-#                                        situation_graphs_fp=constants.SITUATION_GRAPHS_FILE)
 from src.helpers import SGFileLoaders, collections_util
 from src.helpers.collections_util import add_key_to_map_arr
 from src.helpers.situation_graph import SituationGraph

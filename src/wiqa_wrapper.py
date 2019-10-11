@@ -271,7 +271,7 @@ class WIQADataPoint(object):
                              )
 
     @staticmethod
-    def __get_default_whatif_metadata(
+    def get_default_whatif_metadata(
             para_ids_metainfo_fp=download_from_url_if_not_in_cache(
                 para_partition_info.cloud_path),
             situation_graphs_fp=download_from_url_if_not_in_cache(
@@ -279,7 +279,7 @@ class WIQADataPoint(object):
         return WhatifMetadata(para_ids_metainfo_fp=para_ids_metainfo_fp, situation_graphs_fp=situation_graphs_fp)
 
     @staticmethod
-    def __get_default_propara_paragraphs_metadata(extended_propara_para_fp=download_from_url_if_not_in_cache(
+    def get_default_propara_paragraphs_metadata(extended_propara_para_fp=download_from_url_if_not_in_cache(
         propara_para_info.cloud_path)):
         return ProparaExtendedParaMetadata(extended_propara_para_fp=extended_propara_para_fp)
 

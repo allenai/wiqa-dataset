@@ -48,3 +48,24 @@ class TestWIQAWrapper(TestCase):
                and not answer_obj.metrics[FineEvalMetrics.EQDIR] \
                and not answer_obj.metrics[FineEvalMetrics.XSENTID] \
                and not answer_obj.metrics[FineEvalMetrics.YSENTID]
+
+    # all influence graphs
+    #
+    #
+    #
+    # graph structure is (note: nice diagram depicting node names coming soon):
+    #               X ==> Y
+    #               X =/=> W
+    #               U =/=> Y
+    #               Z ==> X
+    #               V =/=> X
+    #               W =/=> A
+    #               W ==> D
+    #               Y ==> A(ccelerate) or Y ==> D(ecelerate)
+    def test_4_influence_graphs(self):
+        igs = WIQADataPoint.get_default_whatif_metadata()
+        for gid in igs.get_all_graphids():
+            ig = igs.get_graph_for_id(graph_id=gid)
+            assert ig.to_json_v1() is not None
+            break
+
