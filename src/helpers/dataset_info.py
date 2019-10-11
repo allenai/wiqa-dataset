@@ -24,7 +24,7 @@ wiqa_explanations_v1 = DatasetInfo(
 # EMNLP dataset: "no explanations" in json format.
 wiqa_no_explanations_vetted_v1 = DatasetInfo(
     beaker_link="https://allenai.beaker.org/ds/ds_zyukvhb9ezqa/",
-    cloud_path="https://public-aristo-processes.s3-us-west-2.amazonaws.com/wiqa_dataset_no_explanation/",
+    cloud_path="https://public-aristo-processes.s3-us-west-2.amazonaws.com/wiqa_dataset_no_explanation_v2/",
     # [cloud_path + partition for partition in ["train.jsonl", "dev.jsonl", "test.jsonl"]]
     local_path="",
     data_reader="BertMCQAReaderPara",
