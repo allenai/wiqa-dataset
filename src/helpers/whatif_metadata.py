@@ -9,9 +9,7 @@ from src.helpers.situation_graph import SituationGraph
 
 class WhatifMetadata:
     def __init__(self,
-                 # "wiqa_datasets/propara_splits/by_topic/dummy_para_id.prompt.topic.partition.tsv"
                  para_ids_metainfo_fp: str,
-                 # wiqa_datasets/propara_splits/turker_task_outputs/shard23.para.ifthenBlocks.outcomes.json
                  situation_graphs_fp: str):
         self.graph_id_to_graph = dict()
         self.graph_id_to_graphjson = dict()

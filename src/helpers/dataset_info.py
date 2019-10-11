@@ -35,7 +35,7 @@ wiqa_no_explanations_vetted_v1 = DatasetInfo(
 # All the turked influence graphs in json format.
 influence_graphs_v1 = DatasetInfo(
     beaker_link="",
-    cloud_path="https://public-aristo-processes.s3-us-west-2.amazonaws.com/metadata/shard123.para.ifthenBlocks.outcomes.json",
+    cloud_path="https://public-aristo-processes.s3-us-west-2.amazonaws.com/wiqa_influence_graphs.jsonl",
     local_path="",
     data_reader="SituationGraph",
     metadata_info="WhatifMetadata",
