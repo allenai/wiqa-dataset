@@ -12,7 +12,7 @@ DatasetInfo = namedtuple('DatasetInfo',
 
 # EMNLP dataset: "with explanations" in json format.
 wiqa_explanations_v1 = DatasetInfo(
-    beaker_link="https://allenai.beaker.org/ds/ds_jsdpme8ixz86/",  # an unpublished, baseline model.
+    beaker_link="https://beaker.org/ds/ds_jsdpme8ixz86/",  # an unpublished, baseline model.
     cloud_path="https://public-aristo-processes.s3-us-west-2.amazonaws.com/wiqa_dataset_with_explanation/",
     # [cloud_path + partition for partition in ["train.jsonl", "dev.jsonl", "test.jsonl"]]
     local_path="",
@@ -23,7 +23,7 @@ wiqa_explanations_v1 = DatasetInfo(
 
 # EMNLP dataset: "no explanations" in json format.
 wiqa_no_explanations_vetted_v1 = DatasetInfo(
-    beaker_link="https://allenai.beaker.org/ds/ds_zyukvhb9ezqa/",
+    beaker_link="https://beaker.org/ds/ds_zyukvhb9ezqa/",
     cloud_path="https://public-aristo-processes.s3-us-west-2.amazonaws.com/wiqa_dataset_no_explanation_v2/",
     # [cloud_path + partition for partition in ["train.jsonl", "dev.jsonl", "test.jsonl"]]
     local_path="",
