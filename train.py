@@ -90,13 +90,14 @@ class Trainer:
                     # Report progress.
                     print('  Batch {:>5,}  of  {:>5,}.    Elapsed: {:}.'.format(
                         step, len(self.train_dataloader), elapsed))
-                (passage_input_ids, passage_attention_mask, passage_token_type_ids,
-                 labels) = batch
-                """
-                b_input_ids = batch[0].to(self.device)
-                b_input_mask = batch[1].to(self.device)
-                b_labels = batch[2].to(self.device)
-                """
+
+                passage_input_ids = batch["input_ids"]
+                passage_attention_mask = batch["attention_mask"]
+                passage_token_type_ids = batch["token_type_ids"]
+                labels = batch["labels"]
+
+                # (passage_input_ids, passage_attention_mask, passage_token_type_ids,
+                #  labels) = batch
                 self.model.zero_grad()
 
                 loss, logits = self.model(passage_input_ids=passage_input_ids.to(self.device),
@@ -141,8 +142,11 @@ class Trainer:
 
             # Evaluate data for one epoch
             for batch in self.dev_dataloader:
-                (passage_input_ids, passage_attention_mask, passage_token_type_ids,
-                 labels) = batch
+
+                passage_input_ids = batch["input_ids"]
+                passage_attention_mask = batch["attention_mask"]
+                passage_token_type_ids = batch["token_type_ids"]
+                labels = batch["labels"]
     
                 with torch.no_grad():
                     loss, logits = self.model(passage_input_ids=passage_input_ids.to(self.device),

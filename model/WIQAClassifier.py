@@ -20,9 +20,9 @@ class WIQAClassifier(BertPreTrainedModel):
     def forward(
         self,
         passage_input_ids,
-        passage_attention_mask,
-        passage_token_type_ids,
         labels,
+        passage_attention_mask=None,
+        passage_token_type_ids=None,
         position_ids=None,
         head_mask=None,
         inputs_embeds=None
@@ -67,7 +67,7 @@ class WIQAClassifier(BertPreTrainedModel):
         loss, logits = outputs[:2]
 
         """
-        passage_outputs = self.bert(passage_input_ids, attention_mask=passage_attention_mask, token_type_ids=passage_token_type_ids)
+        passage_outputs = self.bert(passage_input_ids)
 
         pooled_output = self.dropout(passage_outputs[1])
         logits = self.classifier(pooled_output)
@@ -88,17 +88,11 @@ def test_context_classifier():
     model = WIQAClassifier.from_pretrained('bert-base-uncased')
 
     passage = tokenizer.encode_plus("Things have colors [SEP] what color is sky?", add_special_tokens=True)
-    context = tokenizer.encode_plus("sky and sea have similar colors [SEP] what color is sky?", add_special_tokens=True)
-    
-    passage_input_ids = torch.tensor(passage["input_ids"]).unsqueeze(0)
-    passage_attention_mask = torch.tensor(passage["attention_mask"]).unsqueeze(0)
 
-    context_input_ids = torch.tensor(context["input_ids"]).unsqueeze(0)
-    context_attention_masks = torch.tensor(context["attention_mask"]).unsqueeze(0)
+    passage_input_ids = torch.tensor(passage["input_ids"]).unsqueeze(0)
 
     labels = torch.tensor([1]).unsqueeze(0)  # Batch size 1
-    outputs = model(passage_input_ids=passage_input_ids, passage_attention_mask=passage_attention_mask,
-        context_input_ids=context_input_ids, context_attention_mask=context_attention_masks, labels=labels)
+    outputs = model(passage_input_ids=passage_input_ids, labels=labels)
 
     loss, logits = outputs[:2]
     print(loss)
