@@ -39,3 +39,8 @@ Set up the virtual environment as above, then run the test like this:
 PYTHONPATH=. pytest
 ```
 
+## Running Model 
+
+```
+python train.py /path/to/data/
+```
