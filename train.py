@@ -4,6 +4,7 @@ Much of the code is taken from this blog: https://mccormickml.com/2019/07/22/BER
 import random
 import time
 
+import argparse
 import numpy as np
 import torch
 from transformers import AdamW
@@ -16,11 +17,12 @@ from src.helpers.data_reader import get_wiqa_dataloader
 
 class Trainer:
 
-    def __init__(self, dataloader_dir):
+    def __init__(self, dataloader_dir, n_epochs, n_labels, batch_size):
         super().__init__()
         self.dataloader_dir = dataloader_dir
-        self.n_epochs = 30
-        self.n_labels = 3
+        self.n_epochs = n_epochs
+        self.n_labels = n_labels
+        self.batch_size = batch_size
         self.device = torch.device(
             "cuda") if torch.cuda.is_available() else torch.device("cpu")
         self.init_model()
@@ -45,9 +47,9 @@ class Trainer:
                                )
 
     def init_dataloaders(self):
-        self.train_dataloader = get_wiqa_dataloader(self.dataloader_dir, "train")
-        self.dev_dataloader = get_wiqa_dataloader(self.dataloader_dir, "dev")
-        self.test_dataloader = get_wiqa_dataloader(self.dataloader_dir, "test")
+        self.train_dataloader = get_wiqa_dataloader(self.dataloader_dir, "train", batch_size=self.batch_size)
+        self.dev_dataloader = get_wiqa_dataloader(self.dataloader_dir, "dev", batch_size=self.batch_size)
+        self.test_dataloader = get_wiqa_dataloader(self.dataloader_dir, "test", batch_size=self.batch_size)
 
     def init_scheduler(self):
         total_steps = len(self.train_dataloader) * self.n_epochs
@@ -197,6 +199,56 @@ class Trainer:
             utils.format_time(time.time()-total_t0)))
 
 
+    def test(self):
+
+        # ========================================
+        #               Testing
+        # ========================================
+        # Run Predictions on the test set
+
+        print("")
+        print("Running Test...")
+
+        t0 = time.time()
+
+        self.model.eval()
+
+        total_test_accuracy = 0
+        total_test_loss = 0
+
+        for batch in self.test_dataloader:
+            passage_input_ids = batch["input_ids"]
+            passage_attention_mask = batch["attention_mask"]
+            passage_token_type_ids = batch["token_type_ids"]
+            labels = batch["labels"]
+
+            with torch.no_grad():
+                loss, logits = self.model(passage_input_ids=passage_input_ids.to(self.device),
+                                          passage_attention_mask=passage_attention_mask.to(self.device),
+                                          passage_token_type_ids=passage_token_type_ids.to(self.device),
+                                          labels=labels.to(self.device))
+
+            total_test_loss += loss.item()
+
+            logits = logits.detach().cpu().numpy()
+            label_ids = labels.to('cpu').numpy()
+
+            total_test_accuracy += utils.flat_accuracy(logits, label_ids)
+
+        # Report the final accuracy for this validation run.
+        avg_val_accuracy = round(
+            total_test_accuracy / len(self.dev_dataloader), 4)
+        print("  Accuracy: {0:.2f}".format(avg_val_accuracy))
+
+        # Calculate the average loss over all of the batches.
+        avg_test_loss = total_test_loss / len(self.dev_dataloader)
+
+        # Measure how long the validation run took.
+        test_time = utils.format_time(time.time() - t0)
+
+        print("  Test Loss: {0:.2f}".format(avg_test_loss))
+        print("  Test Computation took: {:}".format(test_time))
+
     def save_model(self, tag):
         tag = str(tag)
         import os
@@ -216,13 +268,63 @@ class Trainer:
         model_to_save.save_pretrained(output_dir)
 
 
-if __name__ == '__main__':
-    import sys
-    SEED = 42
-    random.seed(SEED)
-    np.random.seed(SEED)
-    torch.manual_seed(SEED)
-    torch.cuda.manual_seed_all(SEED)
-    trainer = Trainer(dataloader_dir=sys.argv[1])
+def main():
+    parser = argparse.ArgumentParser()
+
+    # Required parameters
+    parser.add_argument(
+        "--data_dir",
+        default=None,
+        type=str,
+        required=True,
+        help="The input data folder"
+    )
+
+    parser.add_argument(
+        "--n_epochs",
+        type=str,
+        default=10,
+        help="Number of epochs",
+    )
+
+    parser.add_argument(
+        "--n_labels",
+        type=str,
+        default=3,
+        help="Number of Labels",
+    )
+
+    parser.add_argument(
+        "--batch_size",
+        type=int,
+        default=4,
+        help="Number of Labels",
+    )
+
+    parser.add_argument(
+        "--seed",
+        type=int,
+        default=42,
+        help="Set Seed",
+    )
+
+    args = parser.parse_args()
+
+    random.seed(args.seed)
+    np.random.seed(args.seed)
+    torch.manual_seed(args.seed)
+    torch.cuda.manual_seed_all(args.seed)
+
+    trainer = Trainer(dataloader_dir=args.data_dir,
+                      n_epochs=args.n_epochs,
+                      n_labels=args.n_labels,
+                      batch_size=args.batch_size)
+
     trainer.save_model("inf-loss-based")
     trainer.train()
+    trainer.test()
+
+
+if __name__ == '__main__':
+    main()
+
