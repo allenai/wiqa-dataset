@@ -42,5 +42,5 @@ PYTHONPATH=. pytest
 ## Running Model 
 
 ```
-python train.py /path/to/data/
+python train.py --data_dir /path/to/data/ --batch_size 12
 ```
