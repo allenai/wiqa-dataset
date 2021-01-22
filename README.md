@@ -42,5 +42,7 @@ PYTHONPATH=. pytest
 ## Running Model 
 
 ```
-python train.py --data_dir /path/to/data/ --batch_size 12
+bash model/run_wiqa_classifer.sh
 ```
+
+Note: comment out the `--gpus` and `--accelerator` arguments in the script for CPU training
