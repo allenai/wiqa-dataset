@@ -42,6 +42,7 @@ PYTHONPATH=. pytest
 ## Running Model 
 
 ```
+pip install -r model/requirements.txt
 bash model/run_wiqa_classifer.sh
 ```
 
