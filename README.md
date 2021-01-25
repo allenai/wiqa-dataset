@@ -39,3 +39,11 @@ Set up the virtual environment as above, then run the test like this:
 PYTHONPATH=. pytest
 ```
 
+## Running Model 
+
+```
+pip install -r model/requirements.txt
+bash model/run_wiqa_classifer.sh
+```
+
+Note: comment out the `--gpus` and `--accelerator` arguments in the script for CPU training
