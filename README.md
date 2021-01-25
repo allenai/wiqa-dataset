@@ -24,7 +24,7 @@ sg = wimd.get_graph_for_id(graph_id="13")
 print(sg.to_json_v1())
 ```
 
-This program will read the What If metadata (`wimd`), retrieve situation graph 13 (`sg`), and print a string representation in JSON format. To see the result, run it like this (in the virtual env):
+This program will read the What-If metadata (`wimd`), retrieve situation graph 13 (`sg`), and print a string representation in JSON format. To see the result, run it like this (in the virtual env):
 
 ```
 % PYTHONPATH=. python retrieve.py
@@ -36,7 +36,8 @@ This program will read the What If metadata (`wimd`), retrieve situation graph 1
 Set up the virtual environment as above, then run the test like this:
 
 ```
-PYTHONPATH=. pytest
+PYTHONPATH=. 
+pytest
 ```
 
 ## Running Model 
