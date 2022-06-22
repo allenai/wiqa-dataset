@@ -4,7 +4,7 @@
 # gnn_qa/infer.py: 4
 # gnn_qa/qa_model.py: 11
 # gnn_qa/run.py: 8
-numpy == 1.16.6
+numpy == 1.22.0
 
 # gnn_qa/data.py: 11
 pandas == 1.0.3
