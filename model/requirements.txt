@@ -34,4 +34,4 @@ tqdm == 4.48.0
 
 # gnn_qa/data.py: 14,16
 # gnn_qa/qa_model.py: 3,15
-transformers == 4.1.1
+transformers == 4.30.0
